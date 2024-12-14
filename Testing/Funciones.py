@@ -12,7 +12,7 @@ def crearUsuario(nombre, archivo="usuarios.json"):
     Returns:
         str: mensaje indicando el resultado de la operación
     """
-    if not nombre.isalpha():
+    if not all(char.isalpha() or char.isspace() for char in nombre):
         return "El nombre de usuario sólo debe contener letras"
     if os.path.exists(archivo):
         with open(archivo,"r") as file:

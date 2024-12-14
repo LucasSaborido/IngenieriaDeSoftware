@@ -20,6 +20,12 @@ class testNombre(unittest.TestCase):
                 json.dump([], file, indent=4)
             crearUsuario("María")
             self.assertEqual(crearUsuario("María"), "El usuario ya existe", "No puede haber usuarios repetidos")
+        def testConApellidos(self):
+            with open("usuarios.json", "w") as file:
+                json.dump([], file, indent=4)
+            self.assertEqual(crearUsuario("José Domínguez Rodríguez"),"Usuario creado exitosamente", "Los usuarios deberían poder añadir sus apellidos")
+
+             
 
 if __name__ == "__main__":
      unittest.main()
