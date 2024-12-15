@@ -82,7 +82,14 @@ class testAcceso(unittest.TestCase):
             with open("usuarios.json", "w") as file:
              json.dump([], file, indent=4)
             self.assertEqual(accederPerfil("Invalido", "Pedro", "usuarios.json"), "Error: Tipo de perfil no válido. Los tipos permitidos son: General, Visitante, Administrador, Soporte.")
+"""
+    COMENTARIOS sobre los tests generados con IA.
 
+    Al pedir a chatgpt que genere más tests para la función accederPerfil 
+    sigue la misma estructura de tests que la introducida como referencia pero algunos tests no funcionan correctamente.
+    En concreto, ha sido necesario corregir el test testNombreUsuarioVacio.
+    
+"""
 #Test creados por Mateo
 class testRegistrarEmocion(unittest.TestCase):
     def testRegistroCorrecto(self):
@@ -122,14 +129,7 @@ class testRegistrarEmocion(unittest.TestCase):
             "Error: El archivo de la base de datos está corrupto o vacío.",
             "Debería manejar archivos corruptos correctamente"
         )
-"""
-    COMENTARIOS sobre los tests generados con IA.
 
-    Al pedir a chatgpt que genere más tests para la función accederPerfil 
-    sigue la misma estructura de tests que la introducida como referencia pero algunos tests no funcionan correctamente.
-    En concreto, ha sido necesario corregir el test testNombreUsuarioVacio.
-    
-"""
 
 if __name__ == "__main__":
      unittest.main()
