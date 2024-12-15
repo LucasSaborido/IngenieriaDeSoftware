@@ -83,6 +83,45 @@ class testAcceso(unittest.TestCase):
              json.dump([], file, indent=4)
             self.assertEqual(accederPerfil("Invalido", "Pedro", "usuarios.json"), "Error: Tipo de perfil no válido. Los tipos permitidos son: General, Visitante, Administrador, Soporte.")
 
+#Test creados por Mateo
+class testRegistrarEmocion(unittest.TestCase):
+    def testRegistroCorrecto(self):
+        self.assertEqual(
+            registrarEmocion("Juan", "feliz"),
+            "Emoción 'feliz' registrada para el usuario 'Juan'.",
+            "Debería registrar correctamente la emoción"
+        )
+
+    def testAgregarMultiplesEmociones(self):
+        registrarEmocion("Luis", "feliz")
+        registrarEmocion("Luis", "triste")
+        with open("usuarios.json", "r") as file:
+            data = json.load(file)
+        self.assertEqual(data["Luis"]["emociones"], ["feliz", "triste"], "Debería agregar múltiples emociones para un usuario existente")
+
+    def testUsuarioNoExistente(self):
+        self.assertEqual(
+            registrarEmocion("Pedro", "feliz"),
+            "Error: El usuario 'Pedro' no existe en la base de datos.",
+            "Debería devolver un error si el usuario no existe"
+        )
+
+    def testEmocionInvalida(self):
+        self.assertEqual(
+            registrarEmocion("Maria", "confundido"),
+            "Error: La emoción 'confundido' no es válida. Las emociones válidas son: feliz, triste, enojado, sorprendido, neutral.",
+            "Debería detectar emociones inválidas"
+        )
+
+    def testArchivoCorrupto(self):
+        # Simula un archivo corrupto
+        with open("usuarios.json", "w") as file:
+            file.write("Texto no JSON")
+        self.assertEqual(
+            registrarEmocion("Juan", "feliz"),
+            "Error: El archivo de la base de datos está corrupto o vacío.",
+            "Debería manejar archivos corruptos correctamente"
+        )
 """
     COMENTARIOS sobre los tests generados con IA.
 
