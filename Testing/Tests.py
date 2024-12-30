@@ -130,6 +130,68 @@ class testRegistrarEmocion(unittest.TestCase):
             "Debería manejar archivos corruptos correctamente"
         )
 
+#Test creados por Javi
+class testEliminarUsuario(unittest.TestCase):
+    def testEliminarUsuarioExistente(self):
+        # Prepara el archivo con usuarios
+        with open("usuarios.json", "w") as file:
+            json.dump(["Carlos", "Ana"], file, indent=4)
+        
+        self.assertEqual(
+            eliminarUsuario("Carlos"),
+            "Usuario 'Carlos' eliminado correctamente.",
+            "Debería eliminar un usuario existente."
+        )
+
+    def testEliminarUsuarioInexistente(self):
+        # Prepara el archivo con usuarios
+        with open("usuarios.json", "w") as file:
+            json.dump(["Carlos", "Ana"], file, indent=4)
+        
+        self.assertEqual(
+            eliminarUsuario("Pedro"),
+            "Error: El usuario 'Pedro' no existe en la base de datos.",
+            "Debería devolver error si el usuario no existe."
+        )
+
+    def testBaseDatosInexistente(self):
+        # Asegura que el archivo no exista
+        if os.path.exists("usuarios.json"):
+            os.remove("usuarios.json")
+        
+        self.assertEqual(
+            eliminarUsuario("Carlos"),
+            "Error: La base de datos no existe.",
+            "Debería manejar la falta de un archivo correctamente."
+        )
+
+    def testBaseDatosCorrupta(self):
+        # Prepara un archivo corrupto
+        with open("usuarios.json", "w") as file:
+            file.write("Contenido inválido")
+        
+        self.assertEqual(
+            eliminarUsuario("Carlos"),
+            "Error: El archivo de la base de datos está corrupto o vacío.",
+            "Debería manejar un archivo corrupto correctamente."
+        )
+
+    def testEliminarUltimoUsuario(self):
+        # Prepara el archivo con un solo usuario
+        with open("usuarios.json", "w") as file:
+            json.dump(["Carlos"], file, indent=4)
+        
+        self.assertEqual(
+            eliminarUsuario("Carlos"),
+            "Usuario 'Carlos' eliminado correctamente.",
+            "Debería eliminar el último usuario correctamente."
+        )
+
+        with open("usuarios.json", "r") as file:
+            data = json.load(file)
+        self.assertEqual(data, [], "La base de datos debería estar vacía después de eliminar el último usuario.")
+
+
 
 if __name__ == "__main__":
      unittest.main()
