@@ -105,3 +105,33 @@ def registrarEmocion(nombre, emocion, archivo="usuarios.json"):
         json.dump(usuarios, file, indent=4)
 
     return f"Emoción '{emocion}' registrada para el usuario '{nombre}'."
+
+
+def eliminarUsuario(nombre, archivo="usuarios.json"):
+    """
+    Elimina un usuario de la base de datos.
+
+    Args:
+        nombre (str): Nombre del usuario a eliminar.
+        archivo (str): Archivo JSON que actúa como base de datos.
+
+    Returns:
+        str: Mensaje indicando el resultado de la operación.
+    """
+    if os.path.exists(archivo):
+        with open(archivo, "r") as file:
+            try:
+                usuarios = json.load(file)
+            except json.JSONDecodeError:
+                return "Error: El archivo de la base de datos está corrupto o vacío."
+    else:
+        return "Error: La base de datos no existe."
+
+    if nombre not in usuarios:
+        return f"Error: El usuario '{nombre}' no existe en la base de datos."
+
+    usuarios.remove(nombre)
+    with open(archivo, "w") as file:
+        json.dump(usuarios, file, indent=4)
+
+    return f"Usuario '{nombre}' eliminado correctamente."
