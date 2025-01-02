@@ -135,3 +135,63 @@ def eliminarUsuario(nombre, archivo="usuarios.json"):
         json.dump(usuarios, file, indent=4)
 
     return f"Usuario '{nombre}' eliminado correctamente."
+
+# Function for test cases of Lukas
+def generate_personalised_response(name, file_path="users.json"):
+    """
+    Generates a personalized response for the user based on their emotional history.
+
+    Args:
+        name (str): Name of the user.
+        file_path (str): Path to the JSON file serving as the user database.
+
+    Returns:
+        str: A personalised response or an error message.
+    """
+    if not os.path.exists(file_path):
+        return "Error: The database does not exist."
+
+    # Load the database
+    with open(file_path, "r") as file:
+        try:
+            users = json.load(file)
+        except json.JSONDecodeError:
+            return "Error: The database file is corrupted or empty."
+
+    # Check if the user exists
+    if name not in users:
+        return f"Error: The user '{name}' does not exist in the database."
+
+    # Get the user's emotional history
+    user_data = users.get(name, {})
+    emotions = user_data.get("emotions", [])
+    if not emotions:
+        return f"Hello {name}, it seems I don't have enough information about your emotions to personalize my response."
+
+    # Analyze the predominant emotion
+    predominant_emotion = max(set(emotions), key=emotions.count)
+
+    # Generate a personalised response based on the predominant emotion
+    responses = {
+        "happy": f"Hello {name}! I'm glad to see you're feeling happy. How can I assist you today?",
+        "sad": f"Hi {name}, I noticed you've been feeling a bit sad lately. I'm here to listen if you want to talk.",
+        "angry": f"Hi {name}, it seems something might have upset you. Is there anything I can do to make your day better?",
+        "surprised": f"Hi {name}! Has something exciting happened? I'd love to hear more about it.",
+        "neutral": f"Hello {name}, I hope you're having a good day. How can I help you?"
+    }
+
+    return responses.get(predominant_emotion, f"Hello {name}, I'm here to assist you with whatever you need.")
+
+# Example structure of "users.json":
+# {
+#   "John": {
+#       "age": 30,
+#       "important_data": "Prefers coffee over tea",
+#       "emotions": ["happy", "sad", "happy"]
+#   },
+#   "Anna": {
+#       "age": 25,
+#       "important_data": "Enjoys classical music",
+#       "emotions": ["neutral", "neutral", "surprised"]
+#   }
+# }
