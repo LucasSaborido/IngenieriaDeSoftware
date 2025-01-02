@@ -191,7 +191,61 @@ class testEliminarUsuario(unittest.TestCase):
             data = json.load(file)
         self.assertEqual(data, [], "La base de datos debería estar vacía después de eliminar el último usuario.")
 
+# Test cases for generate_personalised created by Lukas
+class TestGeneratePersonalisedResponse(unittest.TestCase):
 
+    # Case 1: Test for file path error
+    def test_file_path_error(self):
+        self.assertEqual(generate_personalised_response("Max", "no_file.json"), "Error: The database does not exist.")
+
+    # Case 2: Test load the database error
+    def test_load_database_error(self):
+        # Create an empty test file
+        with open("empty_test.json", "w") as f:
+            pass  # Leave the file empty to simulate an empty JSON
+        self.assertEqual(generate_personalised_response("Max", "empty_test.json"), "Error: The database file is corrupted or empty.")
+        os.remove("empty_test.json")  # Clean up the temporary file
+    
+    # Case 3: Test user does not exist in database
+    def test_user_does_not_exist(self):
+      # Create a temporary user file
+      with open("temp_users.json", "w") as f:
+          json.dump({}, f)  # Create an empty database
+      self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Error: The user 'Max' does not exist in the database.")
+      os.remove("temp_users.json") # Clean up the temporary file
+
+    # Case 4: Test get the user's emotional history with no history saved
+    def test_get_user_emotional_history(self):
+      # Create a temporary user file
+      with open("temp_users.json", "w") as f:
+          json.dump({
+              "Max": {
+                  "age": 30,
+                  "important_data": "" }
+              }, 
+          f)  # Pass 'f' as the file pointer
+      self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, it seems I don't have enough information about your emotions to personalize my response.")
+      os.remove("temp_users.json") # Clean up the temporary file
+
+    # Case 5: Test generate a personalised response for a predetermined user
+    def test_generate_personalised_response(self):
+      # Create a temporary user file
+      with open("temp_users.json", "w") as f:
+          json.dump({
+              "Max": {
+                  "age": 30,
+                  "important_data": "Prefers coffee over tea",
+                  "emotions": ["happy", "sad", "happy"]
+              },
+              "Anna": {
+                  "age": 25,
+                  "important_data": "Enjoys classical music",
+                  "emotions": ["neutral", "neutral", "surprised"]
+              }
+          }, f)  # Pass 'f' as the file pointer
+      self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max! I'm glad to see you're feeling happy. How can I assist you today?")
+      self.assertEqual(generate_personalised_response("Anna", "temp_users.json"), "Hello Anna, I hope you're having a good day. How can I help you?")
+      os.remove("temp_users.json") # Clean up the temporary file
 
 if __name__ == "__main__":
      unittest.main()
