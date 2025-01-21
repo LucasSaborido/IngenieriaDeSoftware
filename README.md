@@ -1,6 +1,7 @@
 # IngenieriaDeSoftware
 Repositorio para el proyecto de ingeniería de software
 # Proyecto: MetaBot
+![Logo MetaBot](Media/Logo.jpg)
 
 ## Descripción
 
