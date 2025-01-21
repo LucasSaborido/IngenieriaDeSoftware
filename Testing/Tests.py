@@ -27,6 +27,45 @@ class testNombre(unittest.TestCase):
                 json.dump([], file, indent=4)
             self.assertEqual(crearUsuario("José Domínguez Rodríguez"),"Usuario creado exitosamente", "Los usuarios deberían poder añadir sus apellidos")
 
+        #Tests creados por Chatgpt
+
+        def test_nombre_vacio(self):
+            """Prueba que no se pueda crear un usuario con un nombre vacío."""
+            with open("usuarios.json", "w") as file:
+                json.dump([], file, indent=4)
+            self.assertEqual(crearUsuario(""), "El nombre de usuario sólo debe contener letras", "No debe permitir nombres vacíos")
+
+        def test_espacios_solo(self):
+            """Prueba que no se pueda crear un usuario con solo espacios."""
+            with open("usuarios.json", "w") as file:
+                json.dump([], file, indent=4)
+            self.assertEqual(crearUsuario("   "), "El nombre de usuario sólo debe contener letras", "No debe permitir nombres con solo espacios")
+        
+        def test_nombre_con_espacios_inicio_y_fin(self):
+            """Prueba nombres válidos con espacios al inicio y al final."""
+            with open("usuarios.json", "w") as file:
+                json.dump([], file, indent=4)
+            self.assertEqual(crearUsuario("  Carlos Pérez  "), "Usuario creado exitosamente", "Debe permitir nombres con espacios al inicio y al final")
+
+        def test_nombre_con_espacios_consecutivos(self):
+            """Prueba nombres válidos con múltiples espacios consecutivos."""
+            with open("usuarios.json", "w") as file:
+                json.dump([], file, indent=4)
+            self.assertEqual(crearUsuario("Juan  Carlos"), "Usuario creado exitosamente", "Debe permitir nombres con múltiples espacios consecutivos")
+        
+        def test_archivo_corrupto(self):
+            """Prueba cuando el archivo de usuarios está corrupto."""
+            with open("usuarios.json", "w") as file:
+                file.write("contenido inválido")
+            self.assertEqual(crearUsuario("Ana"), "Usuario creado exitosamente", "Debe manejar archivos corruptos reiniciándolos")
+        
+        def test_archivo_inexistente(self):
+            """Prueba cuando el archivo no existe."""
+            if os.path.exists("usuarios.json"):
+                os.remove("usuarios.json")
+            self.assertEqual(crearUsuario("Pedro"), "Usuario creado exitosamente", "Debe manejar la creación de un archivo inexistente correctamente")
+        
+
 # Tests creados por Laura
 class testAcceso(unittest.TestCase):
         def testGeneral(self):

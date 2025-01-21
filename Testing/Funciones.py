@@ -12,17 +12,30 @@ def crearUsuario(nombre, archivo="usuarios.json"):
     Returns:
         str: mensaje indicando el resultado de la operación
     """
+    #Verificar que el nombre no está vacío
+
+    if not nombre.strip():
+        return "El nombre de usuario sólo debe contener letras"
+    
+    #Eliminar espacios al inicio y al final
+    nombre = nombre.strip()
+
+    #Comprobar si sólo tiene letras y espacios
     if not all(char.isalpha() or char.isspace() for char in nombre):
         return "El nombre de usuario sólo debe contener letras"
+    
+    #Abrir el archivo de usuarios o crearlo si no existe
     if os.path.exists(archivo):
         with open(archivo,"r") as file:
             usuarios=json.load(file)
     else:
         usuarios = []
     
+    #Comprobar si el nombre de usuario ya está en uso
     if nombre in usuarios:
         return "El usuario ya existe"
     
+    #Guardar en el archivo de usuarios
     usuarios.append(nombre)
     with open(archivo, "w") as file:
         json.dump(usuarios,file,indent=4)
