@@ -1,8 +1,7 @@
 import unittest
 import json
 import os
-from Funciones import crearUsuario
-from Funciones import accederPerfil
+from Funciones import *
 
 # Tests creados por Lucas
 class testNombre(unittest.TestCase):
