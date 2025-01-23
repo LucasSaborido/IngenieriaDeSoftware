@@ -92,18 +92,22 @@ def registrarEmocion(nombre, emocion, archivo="usuarios.json"):
     Returns:
         str: Mensaje indicando el resultado de la operación.
     """
+    # Lista de emociones válidas
     emociones_validas = ["feliz", "triste", "enojado", "sorprendido", "neutral"]
     if emocion.lower() not in emociones_validas:
         return f"Error: La emoción '{emocion}' no es válida. Las emociones válidas son: {', '.join(emociones_validas)}."
 
-    if os.path.exists(archivo):
+    # Manejar la ausencia del archivo creando un archivo vacío
+    if not os.path.exists(archivo):
+        with open(archivo, "w") as file:
+            json.dump({}, file)
+
+    # Cargar datos del archivo
+    try:
         with open(archivo, "r") as file:
-            try:
-                usuarios = json.load(file)
-            except json.JSONDecodeError:
-                return "Error: El archivo de la base de datos está corrupto o vacío."
-    else:
-        return "Error: La base de datos no existe."
+            usuarios = json.load(file)
+    except json.JSONDecodeError:
+        return "Error: El archivo de la base de datos está corrupto o vacío."
 
     # Verificar si el usuario existe
     if nombre not in usuarios:
@@ -114,6 +118,7 @@ def registrarEmocion(nombre, emocion, archivo="usuarios.json"):
         usuarios[nombre]["emociones"] = []
     usuarios[nombre]["emociones"].append(emocion.lower())
 
+    # Guardar los cambios en el archivo
     with open(archivo, "w") as file:
         json.dump(usuarios, file, indent=4)
 
