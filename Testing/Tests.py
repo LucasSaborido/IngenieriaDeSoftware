@@ -168,6 +168,99 @@ class testRegistrarEmocion(unittest.TestCase):
             "Debería manejar archivos corruptos correctamente"
         )
 
+#Test creados por Javier O.
+class testReconocimientoEmocion(unittest.TestCase):
+     def testReconocimientoEmocionCorrecta(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({}, file, indent=4)
+        self.assertEqual(
+                reconocimientoEmocion("Hoy estoy muy feliz porque todo ha ido bien.", "Juan", "usuarios.json"),
+                "Emoción 'feliz' registrada para el usuario 'Juan'.","Debería registrar correctamente la emoción"
+        )
+
+    def testReconocimientoMultipleEmociones(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Luis": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+                reconocimientoEmocion("Me siento triste y enojado por lo que pasó ayer.", "Luis", "usuarios.json"),
+                "Emoción 'triste' registrada para el usuario 'Luis'.\nEmoción 'enojado' registrada para el usuario 'Luis'.",
+                "Debería agregar ambas emociones al usuario 'Luis'."
+        )
+
+    def testReconocimientoNoEmociones(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Pedro": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("Hoy he pasado un buen día.", "Pedro", "usuarios.json"),
+            "No se encontraron emociones válidas en el texto.",
+            "Debería devolver un mensaje indicando que no se detectaron emociones."
+        )
+
+    def testReconocimientoEmocionInvalida(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Maria": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("Me siento confundido.", "Maria", "usuarios.json"),
+            "No se encontraron emociones válidas en el texto.",
+            "Debería devolver un mensaje indicando que no se detectaron emociones."
+        )
+
+    def testReconocimientoConTextoVacio(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("", "Juan", "usuarios.json"),
+            "No se encontraron emociones válidas en el texto.",
+            "Debería devolver un mensaje indicando que no se detectaron emociones."
+        )
+
+    # Tests generados por la IA
+    def testReconocimientoEmocionFeliz(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("Hoy me siento muy feliz y lleno de energía.", "Juan", "usuarios.json"),
+            "Emoción 'feliz' registrada para el usuario 'Juan'.",
+            "Debería registrar correctamente la emoción 'feliz'."
+        )
+
+    def testReconocimientoEmocionSorpresa(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("¡Estoy sorprendido de lo que sucedió!", "Juan", "usuarios.json"),
+            "Emoción 'sorprendido' registrada para el usuario 'Juan'.",
+            "Debería registrar correctamente la emoción 'sorprendido'."
+        )
+
+    def testReconocimientoEmocionNeutral(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("Hoy me siento neutral, ni bien ni mal.", "Juan", "usuarios.json"),
+            "Emoción 'neutral' registrada para el usuario 'Juan'.",
+            "Debería registrar correctamente la emoción 'neutral'."
+        )
+
+    def testReconocimientoSinEmocionEnFrase(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("El sol brilla y el cielo está claro.", "Juan", "usuarios.json"),
+            "No se encontraron emociones válidas en el texto.",
+            "Debería devolver un mensaje indicando que no se detectaron emociones."
+        )
+
+    def testReconocimientoEmocionCombinada(self):
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        self.assertEqual(
+            reconocimientoEmocion("Estoy feliz porque todo salió bien, pero también un poco sorprendido por lo que sucedió.", "Juan", "usuarios.json"),
+            "Emoción 'feliz' registrada para el usuario 'Juan'.\nEmoción 'sorprendido' registrada para el usuario 'Juan'.",
+            "Debería registrar ambas emociones 'feliz' y 'sorprendido'."
+        )   
+
+
 #Test creados por Javi
 class testEliminarUsuario(unittest.TestCase):
     def testEliminarUsuarioExistente(self):
