@@ -119,6 +119,37 @@ def registrarEmocion(nombre, emocion, archivo="usuarios.json"):
 
     return f"Emoción '{emocion}' registrada para el usuario '{nombre}'."
 
+#Función Javier Ortega
+def reconocimientoEmocion(texto, nombre, archivo="usuarios.json"):
+    """
+    Extrae las emociones de una frase y las registra para un usuario.
+
+    Args:
+        texto (str): Frase de texto en la que se buscan emociones.
+        nombre (str): Nombre del usuario.
+        archivo (str): Archivo JSON que actúa como base de datos.
+
+    Returns:
+        str: Mensajes indicando el resultado de la operación para cada emoción encontrada.
+    """
+    emociones_validas = ["feliz", "triste", "enojado", "sorprendido", "neutral"]
+    respuestas = []
+    
+    # Convertir el texto a minúsculas y buscar las emociones
+    texto_lower = texto.lower()
+
+    for emocion in emociones_validas:
+        if emocion in texto_lower:
+            # Llamar a la función registrarEmocion para cada emoción encontrada
+            resultado = registrarEmocion(nombre, emocion, archivo)
+            respuestas.append(resultado)
+    
+    # Retornar los mensajes generados por registrarEmocion
+    if respuestas:
+        return "\n".join(respuestas)
+    else:
+        return "No se encontraron emociones válidas en el texto."
+
 
 def eliminarUsuario(nombre, archivo="usuarios.json"):
     """
