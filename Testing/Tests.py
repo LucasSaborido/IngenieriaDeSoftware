@@ -124,7 +124,19 @@ class testAcceso(unittest.TestCase):
 """
 #Test creados por Mateo
 class testRegistrarEmocion(unittest.TestCase):
+    def setUp(self):
+        """
+        Se ejecuta antes de cada prueba para garantizar que el archivo de usuarios
+        esté correctamente inicializado y sin interferencias.
+        """
+        with open("usuarios.json", "w") as file:
+            json.dump({}, file, indent=4)
+
     def testRegistroCorrecto(self):
+        # Inicializar el archivo con un usuario válido
+        with open("usuarios.json", "w") as file:
+            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+
         self.assertEqual(
             registrarEmocion("Juan", "feliz"),
             "Emoción 'feliz' registrada para el usuario 'Juan'.",
@@ -132,13 +144,25 @@ class testRegistrarEmocion(unittest.TestCase):
         )
 
     def testAgregarMultiplesEmociones(self):
+        # Inicializar el archivo con un usuario válido
+        with open("usuarios.json", "w") as file:
+            json.dump({"Luis": {"emociones": []}}, file, indent=4)
+
         registrarEmocion("Luis", "feliz")
         registrarEmocion("Luis", "triste")
+
         with open("usuarios.json", "r") as file:
             data = json.load(file)
-        self.assertEqual(data["Luis"]["emociones"], ["feliz", "triste"], "Debería agregar múltiples emociones para un usuario existente")
+        self.assertEqual(
+            data["Luis"]["emociones"],
+            ["feliz", "triste"],
+            "Debería agregar múltiples emociones para un usuario existente"
+        )
 
     def testUsuarioNoExistente(self):
+        # Archivo inicializado pero sin el usuario específico
+        with open("usuarios.json", "w") as file:
+            json.dump({}, file, indent=4)
 
         self.assertEqual(
             registrarEmocion("Pedro", "feliz"),
@@ -147,6 +171,10 @@ class testRegistrarEmocion(unittest.TestCase):
         )
 
     def testEmocionInvalida(self):
+        # Inicializar el archivo con un usuario válido
+        with open("usuarios.json", "w") as file:
+            json.dump({"Maria": {"emociones": []}}, file, indent=4)
+
         self.assertEqual(
             registrarEmocion("Maria", "confundido"),
             "Error: La emoción 'confundido' no es válida. Las emociones válidas son: feliz, triste, enojado, sorprendido, neutral.",
@@ -157,6 +185,7 @@ class testRegistrarEmocion(unittest.TestCase):
         # Simula un archivo corrupto
         with open("usuarios.json", "w") as file:
             file.write("Texto no JSON")
+
         self.assertEqual(
             registrarEmocion("Juan", "feliz"),
             "Error: El archivo de la base de datos está corrupto o vacío.",
