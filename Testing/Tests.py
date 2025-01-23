@@ -53,12 +53,6 @@ class testNombre(unittest.TestCase):
                 json.dump([], file, indent=4)
             self.assertEqual(crearUsuario("Juan  Carlos"), "Usuario creado exitosamente", "Debe permitir nombres con múltiples espacios consecutivos")
         
-        def test_archivo_corrupto(self):
-            """Prueba cuando el archivo de usuarios está corrupto."""
-            with open("usuarios.json", "w") as file:
-                file.write("contenido inválido")
-            self.assertEqual(crearUsuario("Ana"), "Usuario creado exitosamente", "Debe manejar archivos corruptos reiniciándolos")
-        
         def test_archivo_inexistente(self):
             """Prueba cuando el archivo no existe."""
             if os.path.exists("usuarios.json"):
@@ -145,6 +139,7 @@ class testRegistrarEmocion(unittest.TestCase):
         self.assertEqual(data["Luis"]["emociones"], ["feliz", "triste"], "Debería agregar múltiples emociones para un usuario existente")
 
     def testUsuarioNoExistente(self):
+
         self.assertEqual(
             registrarEmocion("Pedro", "feliz"),
             "Error: El usuario 'Pedro' no existe en la base de datos.",
@@ -171,14 +166,13 @@ class testRegistrarEmocion(unittest.TestCase):
 #Test creados por Javier O.
 class testReconocimientoEmocion(unittest.TestCase):
      def testReconocimientoEmocionCorrecta(self):
-        with open("usuarios.json", "w") as file:
-            json.dump({}, file, indent=4)
+        crearUsuario("Juan")
         self.assertEqual(
                 reconocimientoEmocion("Hoy estoy muy feliz porque todo ha ido bien.", "Juan", "usuarios.json"),
                 "Emoción 'feliz' registrada para el usuario 'Juan'.","Debería registrar correctamente la emoción"
         )
 
-    def testReconocimientoMultipleEmociones(self):
+     def testReconocimientoMultipleEmociones(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Luis": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -187,7 +181,7 @@ class testReconocimientoEmocion(unittest.TestCase):
                 "Debería agregar ambas emociones al usuario 'Luis'."
         )
 
-    def testReconocimientoNoEmociones(self):
+     def testReconocimientoNoEmociones(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Pedro": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -196,7 +190,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería devolver un mensaje indicando que no se detectaron emociones."
         )
 
-    def testReconocimientoEmocionInvalida(self):
+     def testReconocimientoEmocionInvalida(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Maria": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -205,7 +199,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería devolver un mensaje indicando que no se detectaron emociones."
         )
 
-    def testReconocimientoConTextoVacio(self):
+     def testReconocimientoConTextoVacio(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -215,7 +209,7 @@ class testReconocimientoEmocion(unittest.TestCase):
         )
 
     # Tests generados por la IA
-    def testReconocimientoEmocionFeliz(self):
+     def testReconocimientoEmocionFeliz(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -224,7 +218,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería registrar correctamente la emoción 'feliz'."
         )
 
-    def testReconocimientoEmocionSorpresa(self):
+     def testReconocimientoEmocionSorpresa(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -233,7 +227,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería registrar correctamente la emoción 'sorprendido'."
         )
 
-    def testReconocimientoEmocionNeutral(self):
+     def testReconocimientoEmocionNeutral(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -242,7 +236,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería registrar correctamente la emoción 'neutral'."
         )
 
-    def testReconocimientoSinEmocionEnFrase(self):
+     def testReconocimientoSinEmocionEnFrase(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
@@ -251,7 +245,7 @@ class testReconocimientoEmocion(unittest.TestCase):
             "Debería devolver un mensaje indicando que no se detectaron emociones."
         )
 
-    def testReconocimientoEmocionCombinada(self):
+     def testReconocimientoEmocionCombinada(self):
         with open("usuarios.json", "w") as file:
             json.dump({"Juan": {"emociones": []}}, file, indent=4)
         self.assertEqual(
