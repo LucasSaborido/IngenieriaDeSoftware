@@ -192,6 +192,64 @@ class testRegistrarEmocion(unittest.TestCase):
             "Debería manejar archivos corruptos correctamente"
         )
 
+    # Test creados por IA
+    def testAgregarEmocionMayusculas(self):
+        # Inicializar el archivo con un usuario válido
+        with open("usuarios.json", "w") as file:
+            json.dump({"Ana": {"emociones": []}}, file, indent=4)
+
+        self.assertEqual(
+            registrarEmocion("Ana", "FELIZ"),
+            "Emoción 'feliz' registrada para el usuario 'Ana'.",
+            "Debería registrar correctamente emociones en mayúsculas"
+        )
+
+    def testAgregarEmocionDuplicada(self):
+        # Inicializar el archivo con un usuario válido y una emoción previa
+        with open("usuarios.json", "w") as file:
+            json.dump({"Carlos": {"emociones": ["feliz"]}}, file, indent=4)
+
+        registrarEmocion("Carlos", "feliz")
+        with open("usuarios.json", "r") as file:
+            data = json.load(file)
+        self.assertEqual(
+            data["Carlos"]["emociones"],
+            ["feliz", "feliz"],
+            "Debería permitir registrar emociones duplicadas"
+        )
+
+    def testRegistrarEmocionNombreVacio(self):
+        # Inicializar el archivo con usuarios vacíos
+        with open("usuarios.json", "w") as file:
+            json.dump({}, file, indent=4)
+
+        self.assertEqual(
+            registrarEmocion("", "feliz"),
+            "Error: El usuario '' no existe en la base de datos.",
+            "Debería manejar el caso de un nombre de usuario vacío"
+        )
+
+    def testRegistrarEmocionNombreConEspacios(self):
+        # Inicializar el archivo con un usuario válido
+        with open("usuarios.json", "w") as file:
+            json.dump({"Maria Fernanda": {"emociones": []}}, file, indent=4)
+
+        self.assertEqual(
+            registrarEmocion("Maria Fernanda", "triste"),
+            "Emoción 'triste' registrada para el usuario 'Maria Fernanda'.",
+            "Debería registrar correctamente emociones para nombres con espacios"
+        )
+
+    def testRegistrarEmocionSinArchivo(self):
+        # Asegurar que el archivo no exista antes de la prueba
+        if os.path.exists("usuarios.json"):
+            os.remove("usuarios.json")
+
+        self.assertEqual(
+            registrarEmocion("Pedro", "feliz"),
+            "Error: El archivo de la base de datos está corrupto o vacío.",
+            "Debería manejar el caso en que el archivo no exista"
+        )
 #Test creados por Javier O.
 class testReconocimientoEmocion(unittest.TestCase):
      def testReconocimientoEmocionCorrecta(self):
