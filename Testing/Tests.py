@@ -457,62 +457,62 @@ class TestGeneratePersonalisedResponse(unittest.TestCase):
 
   # 5 Additional tests created by AI (ChatGPT)
         # Case 6: Test for invalid JSON format in the database file
-        def test_invalid_json_format(self):
-            with open("invalid_test.json", "w") as f:
-                f.write("{invalid_json}")  # Write an invalid JSON string
-            self.assertEqual(generate_personalised_response("Max", "invalid_test.json"), "Error: The database file is corrupted or empty.")
-            os.remove("invalid_test.json")  # Clean up the temporary file
-        
-        # Case 7: Test for a user with no emotions recorded
-        def test_user_with_no_emotions(self):
-            with open("temp_users.json", "w") as f:
-                json.dump({
-                    "Max": {
-                        "age": 30,
-                        "important_data": "Prefers coffee over tea",
-                        "emotions": []
-                    }
-                }, f)
-            self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, it seems I don't have enough information about your emotions to personalize my response.")
-            os.remove("temp_users.json")
-        
-        # Case 8: Test for a user with only neutral emotions
-        def test_user_with_neutral_emotions(self):
-            with open("temp_users.json", "w") as f:
-                json.dump({
-                    "Max": {
-                        "age": 30,
-                        "important_data": "Enjoys hiking",
-                        "emotions": ["neutral", "neutral", "neutral"]
-                    }
-                }, f)
-            self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, I hope you're having a good day. How can I help you?")
-            os.remove("temp_users.json")
-        
-        # Case 9: Test for a user with mixed emotions
-        def test_user_with_mixed_emotions(self):
-            with open("temp_users.json", "w") as f:
-                json.dump({
-                    "Max": {
-                        "age": 30,
-                        "important_data": "Loves reading books",
-                        "emotions": ["happy", "sad", "neutral", "happy"]
-                    }
-                }, f)
-            self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max! I'm glad to see you're feeling happy. How can I assist you today?")
-            os.remove("temp_users.json")
-        
-        # Case 10: Test for a missing key in the user's data
-        def test_user_with_missing_key(self):
-            with open("temp_users.json", "w") as f:
-                json.dump({
-                    "Max": {
-                        "age": 30
-                        # Missing "important_data" and "emotions" keys
-                    }
-                }, f)
-            self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Error: The user's data is incomplete in the database.")
-            os.remove("temp_users.json")
+    def test_invalid_json_format(self):
+        with open("invalid_test.json", "w") as f:
+            f.write("{invalid_json}")  # Write an invalid JSON string
+        self.assertEqual(generate_personalised_response("Max", "invalid_test.json"), "Error: The database file is corrupted or empty.")
+        os.remove("invalid_test.json")  # Clean up the temporary file
+    
+    # Case 7: Test for a user with no emotions recorded
+    def test_user_with_no_emotions(self):
+        with open("temp_users.json", "w") as f:
+            json.dump({
+                "Max": {
+                    "age": 30,
+                    "important_data": "Prefers coffee over tea",
+                    "emotions": []
+                }
+            }, f)
+        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, it seems I don't have enough information about your emotions to personalize my response.")
+        os.remove("temp_users.json")
+    
+    # Case 8: Test for a user with only neutral emotions
+    def test_user_with_neutral_emotions(self):
+        with open("temp_users.json", "w") as f:
+            json.dump({
+                "Max": {
+                    "age": 30,
+                    "important_data": "Enjoys hiking",
+                    "emotions": ["neutral", "neutral", "neutral"]
+                }
+            }, f)
+        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, I hope you're having a good day. How can I help you?")
+        os.remove("temp_users.json")
+    
+    # Case 9: Test for a user with mixed emotions
+    def test_user_with_mixed_emotions(self):
+        with open("temp_users.json", "w") as f:
+            json.dump({
+                "Max": {
+                    "age": 30,
+                    "important_data": "Loves reading books",
+                    "emotions": ["happy", "sad", "neutral", "happy"]
+                }
+            }, f)
+        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max! I'm glad to see you're feeling happy. How can I assist you today?")
+        os.remove("temp_users.json")
+    
+    # Case 10: Test for a missing key in the user's data
+    def test_user_with_missing_key(self):
+        with open("temp_users.json", "w") as f:
+            json.dump({
+                "Max": {
+                    "age": 30
+                    # Missing "important_data" and "emotions" keys
+                }
+            }, f)
+        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Error: The user's data is incomplete in the database.")
+        os.remove("temp_users.json")
 
 if __name__ == "__main__":
      unittest.main()
