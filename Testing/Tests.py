@@ -259,9 +259,8 @@ class testReconocimientoEmocion(unittest.TestCase):
                 "Emoción 'feliz' registrada para el usuario 'Juan'.","Debería registrar correctamente la emoción"
         )
 
-     def testReconocimientoMultipleEmociones(self):
-        with open("usuarios.json", "w") as file:
-            json.dump({"Luis": {"emociones": []}}, file, indent=4)
+     def testReconocimientoMultiplesEmociones(self):
+        crearUsuario("Luis")
         self.assertEqual(
                 reconocimientoEmocion("Me siento triste y enojado por lo que pasó ayer.", "Luis", "usuarios.json"),
                 "Emoción 'triste' registrada para el usuario 'Luis'.\nEmoción 'enojado' registrada para el usuario 'Luis'.",
@@ -269,8 +268,7 @@ class testReconocimientoEmocion(unittest.TestCase):
         )
 
      def testReconocimientoNoEmociones(self):
-        with open("usuarios.json", "w") as file:
-            json.dump({"Pedro": {"emociones": []}}, file, indent=4)
+        crearUsuario("Pedro")
         self.assertEqual(
             reconocimientoEmocion("Hoy he pasado un buen día.", "Pedro", "usuarios.json"),
             "No se encontraron emociones válidas en el texto.",
@@ -278,19 +276,17 @@ class testReconocimientoEmocion(unittest.TestCase):
         )
 
      def testReconocimientoEmocionInvalida(self):
-        with open("usuarios.json", "w") as file:
-            json.dump({"Maria": {"emociones": []}}, file, indent=4)
+        crearUsuario("Maria")
         self.assertEqual(
-            reconocimientoEmocion("Me siento confundido.", "Maria", "usuarios.json"),
+            reconocimientoEmocion("Me siento confundida.", "Maria", "usuarios.json"),
             "No se encontraron emociones válidas en el texto.",
             "Debería devolver un mensaje indicando que no se detectaron emociones."
         )
 
      def testReconocimientoConTextoVacio(self):
-        with open("usuarios.json", "w") as file:
-            json.dump({"Juan": {"emociones": []}}, file, indent=4)
+        crearUsuario("Sara")
         self.assertEqual(
-            reconocimientoEmocion("", "Juan", "usuarios.json"),
+            reconocimientoEmocion("", "Sara", "usuarios.json"),
             "No se encontraron emociones válidas en el texto.",
             "Debería devolver un mensaje indicando que no se detectaron emociones."
         )
