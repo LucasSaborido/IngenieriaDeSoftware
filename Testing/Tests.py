@@ -511,7 +511,7 @@ class TestGeneratePersonalisedResponse(unittest.TestCase):
                     # Missing "important_data" and "emotions" keys
                 }
             }, f)
-        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Error: The user's data is incomplete in the database.")
+        self.assertEqual(generate_personalised_response("Max", "temp_users.json"), "Hello Max, it seems I don't have enough information about your emotions to personalize my response.")
         os.remove("temp_users.json")
 
 if __name__ == "__main__":
